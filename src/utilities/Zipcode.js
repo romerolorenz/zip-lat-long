@@ -7,7 +7,8 @@ function formatZip(zip) {
 function find(zip) {
   places = zipcodes.find(formatZip(zip))
   if(typeof places == 'object' ) {
-    if(places == null) return places
+    // placeholder TODO: improve
+    if(places == null) return 'Manila CPO - Ermita'
     // randomize place within array
     var place = places[Math.floor(Math.random() * places.length)];
     return place
