@@ -3,7 +3,6 @@ require('dotenv').config();
 const fs = require('fs');
 const csv = require('csv-parser');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const { logger } = require('./Logger.js');
 
 class CsvUtil {
   constructor() {

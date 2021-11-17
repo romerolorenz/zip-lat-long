@@ -1,4 +1,4 @@
-const { CsvUtil, zipcode, logger } = require('./src/utilities/');
+const { CsvUtil, zipcode } = require('./src/utilities/');
 
 const sleep = (ms) => new Promise((resolve, reject) => setTimeout(resolve, ms));
 
@@ -9,17 +9,17 @@ csv = new CsvUtil()
 
 let records
 
-csv.readCsv('orders')
+csv.readCsv('uni_zip')
   .then(async result => {
     records = result
     let promises = []
     for (let i = 0; i < records.length; i++) {
       records[i].location = zipcode.find(result[i].zip)
 
-      console.log(String(i) + '...')
+      console.log(String(i) + '...', records[i].location)
 
       // sleep to avoid rate limit
-      await sleep(50)
+      await sleep(100)
 
       // promise array
       promises.push(axios.get(process.env.GEOCODING, {
@@ -44,17 +44,20 @@ csv.readCsv('orders')
     }
     console.log('saving')
     header = [
+      'SourceName',
       'OrderNumber',
-      'OrderDate',
       'CustomerID',
-      'Address',
+      'PaymentMethod',
+      'PaymentStatus',
+      'Total',
+      'DiscountCodes',
+      'Tags',
+      'DeliveryMethod',
       'zip',
       'location',
       'lat',
       'lng',
-      'Tags',
-      'Note',
-      'CustomerNote'
+      'TotalWeight'
     ]
 
     csv.saveCsv(header, records, 'latlong')
